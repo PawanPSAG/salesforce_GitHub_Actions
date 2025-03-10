@@ -24,3 +24,7 @@ jobs:
       - name: Deploy to Salesforce Sandbox
         run: |
           sfdx force:source:deploy -p force-app --testlevel RunLocalTests --json
+
+      - name: Deploy to Salesforce org
+        run: |
+          sfdx force:source:deploy --manifest=manifest/package.xml --testlevel=RunLocalTests -u ${{ secrets.SALESFORCE_USERNAME_PAWANDEV }}
