@@ -1,0 +1,26 @@
+name: Deploy to Salesforce Sandbox
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Salesforce CLI
+        run: |
+          sudo npm install -g sfdx-cli
+
+      - name: Authenticate Salesforce Sandbox
+        run: |
+          sfdx auth:jwt:grant --clientid ${{ secrets.SALESFORCE_CONSUMER_KEY_PAWANDEV }} --jwtkeyfile server.key --username ${{ secrets.SALESFORCE_USERNAME_PAWANDEV }} --instanceurl ${{ secrets.SFDX_AUTH_URL_SANDBOX }}
+
+      - name: Deploy to Salesforce Sandbox
+        run: |
+          sfdx force:source:deploy -p force-app -u ${{ secrets.SALESFORCE_USERNAME_PAWANDEV }}
