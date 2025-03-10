@@ -5,7 +5,6 @@
       "default": true
     }
   ],
-  "name": "githubActionDeployment",
   "namespace": "",
   "sfdcLoginUrl": "https://test.salesforce.com",
   "sourceApiVersion": "57.0"
