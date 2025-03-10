@@ -8,5 +8,5 @@
   "name": "githubActionDeployment",
   "namespace": "",
   "sfdcLoginUrl": "https://test.salesforce.com",
-  "sourceApiVersion": "61.0"
+  "sourceApiVersion": "57.0"
 }
