@@ -23,4 +23,4 @@ jobs:
 
       - name: Deploy to Salesforce Sandbox
         run: |
-          sfdx force:source:deploy -p force-app -u ${{ secrets.SALESFORCE_USERNAME_PAWANDEV }}
+          sfdx force:source:deploy -p force-app --testlevel RunLocalTests --json
