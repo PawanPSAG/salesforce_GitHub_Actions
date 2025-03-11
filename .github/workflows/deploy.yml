@@ -13,10 +13,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install the SFDX CLI
+      - name: Set up Salesforce CLI
         run: |
-          npm install @salesforce/cli --global
-          sf --help
+          sudo npm install -g sfdx-cli
 
       - name: Authenticate Salesforce Sandbox
         run: |
