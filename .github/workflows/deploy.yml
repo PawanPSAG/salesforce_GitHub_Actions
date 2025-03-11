@@ -13,34 +13,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
       - name: Set up Salesforce CLI
         run: |
-          sudo npm install -g sfdx-cli
+          npm install --global sfdx-cli
 
-      # - name: Authenticate Salesforce Sandbox
-      #  run: |
-      #    sfdx auth:jwt:grant --clientid ${{ secrets.SALESFORCE_CONSUMER_KEY_PAWANDEV }} --jwtkeyfile server.key --username ${{ secrets.SALESFORCE_USERNAME_PAWANDEV }} --instanceurl ${{ secrets.SFDX_AUTH_URL_SANDBOX }}
-
-      #- name: Deploy to Salesforce Sandbox
-      #  run: |
-      #    sfdx force:source:deploy -p force-app --testlevel RunLocalTests --json
-
-      #- name: Deploy to Salesforce org
-      #  run: |
-      #    sfdx force:source:deploy --manifest=manifest/package.xml --testlevel=RunLocalTests -u ${{ secrets.SALESFORCE_USERNAME_PAWANDEV }}
-
-      - name: Generate JWT token
-        id: jwt
+      - name: Authenticate Salesforce Sandbox
         run: |
-          echo "Creating JWT token..."
-          openssl genrsa -out jwt-key.pem 4096
-          JWT=$(openssl dgst -sha256 -sign jwt-key.pem <(echo -n "$(date +%s)")) # This is a basic JWT. You might need to adjust this based on Salesforce requirements.
-          echo "::set-output name=token::$JWT"
+          sfdx auth:jwt:grant --clientid ${{ secrets.SALESFORCE_CONSUMER_KEY_PAWANDEV }} --jwtkeyfile server.key --username ${{ secrets.SALESFORCE_USERNAME_PAWANDEV }} --instanceurl ${{ secrets.SFDX_AUTH_URL_SANDBOX }}
 
-      - name: Authenticate with Salesforce
+      - name: Deploy to Salesforce Sandbox
         run: |
-          sfdx force:auth:jwt:grant --clientid ${{ secrets.SALESFORCE_CONSUMER_KEY_PAWANDEV }} --jwtkeyfile jwt-key.pem --username ${{ secrets.SALESFORCE_USERNAME_PAWANDEV }} --setdefaultdevhubusername --instanceurl https://test.salesforce.com --alias my-hub-org
-
-      - name: Deploy to Salesforce org
-        run: |
-          sfdx force:source:deploy --manifest=manifest/package.xml --testlevel=RunLocalTests -u ${{ secrets.SALESFORCE_USERNAME_PAWANDEV }}
+          sfdx force:source:deploy -p force-app -u ${{ secrets.SALESFORCE_USERNAME_PAWANDEV }}
